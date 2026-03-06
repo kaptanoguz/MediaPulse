@@ -23,6 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install flask openai pyinstaller
           
+      - name: Create static folders
+        run: |
+          mkdir static
+          mkdir static/thumbnails
+          
       - name: Build with PyInstaller
         run: |
           pyinstaller --noconfirm --onefile --windowed --add-data "static;static" --name MediaPulse_Windows app.py

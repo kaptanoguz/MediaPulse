@@ -1,4 +1,5 @@
 import os
+import sys
 import re
 import random
 import subprocess
@@ -15,9 +16,15 @@ from openai import OpenAI
 app = Flask(__name__)
 
 # ====================== AYARLAR & PERSISTENCE ======================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SETTINGS_FILE = os.path.join(BASE_DIR, "static/settings.json")
-THUMB_FOLDER = os.path.join(BASE_DIR, "static/thumbnails")
+if getattr(sys, 'frozen', False):
+    BASE_DIR = sys._MEIPASS
+    DATA_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DATA_DIR = BASE_DIR
+
+SETTINGS_FILE = os.path.join(DATA_DIR, "settings.json")
+THUMB_FOLDER = os.path.join(DATA_DIR, "thumbnails")
 STATIC_FOLDER = os.path.join(BASE_DIR, "static")
 
 default_settings = {
@@ -41,11 +48,11 @@ def save_settings(data):
 
 current_settings = load_settings()
 
-for folder in [THUMB_FOLDER, STATIC_FOLDER]:
+for folder in [THUMB_FOLDER]:
     if not os.path.exists(folder): os.makedirs(folder, exist_ok=True)
 
-FAV_FILE = os.path.join(STATIC_FOLDER, "favorites.json")
-VIEWS_FILE = os.path.join(STATIC_FOLDER, "views.json")
+FAV_FILE = os.path.join(DATA_DIR, "favorites.json")
+VIEWS_FILE = os.path.join(DATA_DIR, "views.json")
 
 # ====================== I18N (DİL DESTEĞİ) ======================
 TRANSLATIONS = {
