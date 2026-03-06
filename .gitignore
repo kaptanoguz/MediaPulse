@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+static/settings.json
+static/thumbnails/
+static/favorites.json
+static/views.json
+.vscode/
+.idea/
+.env
